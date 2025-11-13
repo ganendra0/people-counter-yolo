@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>People Counter Dashboard</title>
+  <style>
+    body {
+      background-color: #f2f7ff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    h1 { color: #0047ab; }
+    .counter-box {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 10px;
+    }
+    .counter {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      width: 120px;
+    }
+    .video-container {
+      margin-top: 20px;
+    }
+    img {
+      border-radius: 10px;
+      width: 640px;
+      height: 480px;
+    }
+  </style>
+</head>
+<body>
+  <h1>People Counter Dashboard</h1>
+  <div class="counter-box">
+    <div class="counter">
+      <h2 id="inCount">0</h2>
+      <p>Masuk</p>
+    </div>
+    <div class="counter">
+      <h2 id="outCount">0</h2>
+      <p>Keluar</p>
+    </div>
+    <div class="counter">
+      <h2 id="insideCount">0</h2>
+      <p>Di Dalam</p>
+    </div>
+  </div>
+
+  <div class="video-container">
+    <img src="{{ url_for('video_feed') }}" alt="Video Stream">
+  </div>
+
+  <script>
+    setInterval(() => {
+      fetch('/get_counts')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('inCount').innerText = data.in;
+          document.getElementById('outCount').innerText = data.out;
+          document.getElementById('insideCount').innerText = data.inside;
+        });
+    }, 1000);
+  </script>
+</body>
+</html>
